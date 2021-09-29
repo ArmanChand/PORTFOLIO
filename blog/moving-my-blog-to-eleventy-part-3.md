@@ -438,7 +438,7 @@ title: Arman Chand| Full-Stack Front-End Developer
     <!-- CSS -->
     <link rel="stylesheet" href="...materialize.min.css" />
     <link rel="stylesheet" href="...font-awesome.min.css" />
-    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
   </head>
   <body>
     {% raw %}{{ content | safe }}{% endraw %}
