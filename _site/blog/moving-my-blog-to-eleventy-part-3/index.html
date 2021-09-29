@@ -289,7 +289,7 @@
 </ol>
 <p>My dev environment is all set up, Eleventy is now successfully installed, my website is now being powered by it locally. So what's next?</p>
 <h3>Command line usage? Already know enough.</h3>
-<p>If we simply move on to the next step the Eleventy docs, I'm directed to view some basic <a href="https://www.11ty.dev/docs/usage/">Eleventy  Command Line usage</a>, including <code>$ npx @11ty/eleventy</code> and <code>$ npx @11ty/eleventy --serve</code>, which we've already used. A quick perusal suggests I already know enough commands to get by and <code>$ npx @11ty/eleventy --help</code> can fill in the blanks in a pinch.</p>
+<p>If we simply move on to the next step the Eleventy docs, I'm directed to view some basic <a href="https://www.11ty.dev/docs/usage/">Eleventy Command Line usage</a>, including <code>$ npx @11ty/eleventy</code> and <code>$ npx @11ty/eleventy --serve</code>, which we've already used. A quick perusal suggests I already know enough commands to get by and <code>$ npx @11ty/eleventy --help</code> can fill in the blanks in a pinch.</p>
 <p>Onward.</p>
 <h3>Starter projects? A little too heavy.</h3>
 <p>Next in the docs are <a href="https://www.11ty.dev/docs/starter/">some Eleventy starter projects</a>. Wow! 21 of them. Let's scan the descriptions for a few minutes... <a href="https://www.w3.org/WAI/fundamentals/accessibility-intro/">Web accessibility</a> is something I've been steadfastly focusing on for the last few years and I'd consider it a non-negotiable for the new version of my website. When I <a href="https://en.wikipedia.org/wiki/Grep#Usage_as_a_verb">grep</a> the page for the word &quot;accessible&quot; I find the one match, the <a href="https://hylia.website/">Hylia template</a>. I've actually used it before, on <a href="https://andrewandmeredith.com/">my still-in-progress wedding website</a> (for a wedding that has sadly been postponed due to global pandemic).</p>
@@ -336,25 +336,13 @@ Watching…
   hello-world-and-why-im-blogging.html
 </code></pre>
 <p>Eleventy automatically compiles my files for me and tosses them into <code>_site</code>, like magic. 🎉</p>
-<pre><code class="language-html">_site/
-  blog/
-    hello-world-and-why-im-blogging
-      index.html
-blog/
-  hello-world-and-why-im-blogging.html
+<pre><code class="language-html">_site/ blog/ hello-world-and-why-im-blogging index.html blog/
+hello-world-and-why-im-blogging.html
 </code></pre>
 <p>But, it also leaves the old files behind. Meaning I now have two copies of all my compiled files — one under <code>/_site</code> and another under <code>/_site/public</code>. 🤔</p>
-<pre><code class="language-html">_site/
-  blog/ ⬅️
-    hello-world-and-why-im-blogging
-      index.html
-  public/
-    assets/
-    blog/ ⬅️
-      hello-world-and-why-im-blogging
-        index.html
-blog/
-  hello-world-and-why-im-blogging.html
+<pre><code class="language-html">_site/ blog/ ⬅️ hello-world-and-why-im-blogging index.html public/ assets/ blog/
+⬅️ hello-world-and-why-im-blogging index.html blog/
+hello-world-and-why-im-blogging.html
 </code></pre>
 <p>I'm a little curious about why this is, but not so much that I'm going to dive really deep into Eleventy docs or the source code. My guess is that it's just safer and simpler to compile files when it sees them, exactly as it sees them, and nothing more. In other words, don't blow away the entire <code>_site</code> folder during each compilation, because that would be expensive and maybe even dangerous. Just compile the files that changed. And if there's a conflict, well maybe Eleventy will warn me about it.</p>
 <p>My guess is that if I simply delete the entire <code>_site</code> folder, then re-run <code>$ eleventy</code> I'll be good to go. BUT I've already moved my static <code>assets/</code> folder in there and definitely don't want to lose that. Good thing the entire <code>_site/</code> folder isn't blown away during every compile or else it would have deleted my entire <code>/assets</code> folder! There ya go, danger confirmed.</p>
@@ -362,69 +350,42 @@ blog/
 <ol>
 <li>Manually move <code>assets/</code> from <code>_site/public/</code> to <code>_site/</code></li>
 </ol>
-<pre><code class="language-html">_site/
-  assets/ ⬅️
-  blog/
-    hello-world-and-why-im-blogging
-      index.html
-  public/
-    blog/
-      hello-world-and-why-im-blogging
-        index.html
-blog/
-  hello-world-and-why-im-blogging.html
+<pre><code class="language-html">_site/ assets/ ⬅️ blog/ hello-world-and-why-im-blogging index.html public/ blog/
+hello-world-and-why-im-blogging index.html blog/
+hello-world-and-why-im-blogging.html
 </code></pre>
 <ol start="2">
 <li>Delete the <code>_site/public/</code> folder</li>
 </ol>
-<pre><code class="language-html">_site/
-  assets/
-  blog/
-    hello-world-and-why-im-blogging
-      index.html
-blog/
-  hello-world-and-why-im-blogging.html
+<pre><code class="language-html">_site/ assets/ blog/ hello-world-and-why-im-blogging index.html blog/
+hello-world-and-why-im-blogging.html
 </code></pre>
 <p>Much better! This is what my entire site directory looks like now.</p>
-<pre><code class="language-html">_site/
-  assets/...
-  blog/...
-  README/...
-  resume/...
-  index.html
-blog/...
-netlify_functions/...
-node_modules/...
-resume/...
-.gitignore
-CNAME
-index.html
-netlify.toml
-package-lock.json
-package.json
-README.md
+<pre><code class="language-html">_site/ assets/... blog/... README/... resume/... index.html blog/...
+netlify_functions/... node_modules/... resume/... .gitignore CNAME index.html
+netlify.toml package-lock.json package.json README.md
 </code></pre>
 <p>OK, now we've got a totally reasonable setup, given this new Eleventy tech stack. And, even better, it all works at <a href="http://localhost:8080/">http://localhost:8080/</a> now instead of <a href="http://localhost:8080/">http://localhost:8080/public</a>. After all these changes, the <code>_site/</code> folder is equivalent to the entire website that users will see. Everything outside of it is what we'll be using to <em>build</em> that site.</p>
 <p>Let's make some ding dang templates already!</p>
 <h3><strong>Step 3: Create an example blog post</strong></h3>
 <p>I'm going to start by copy-ing <a href="https://andrewborstein.com/blog/hello-world-and-why-im-blogging.html">my first blog post</a> into a new markdown file. I eventually want all of my blog posts to be markdown because <a href="https://guides.github.com/features/mastering-markdown/">I find it <em>much</em> easier to write in markdown</a>. I'm writing this very blog post in <a href="https://notion.so/">Notion</a>, which is supports markdown composition and super easy exporting. So even though this file already exists in HTML, I'm going to convert the contents of it to markdown as an experiment, to see if Eleventy can successfully convert it back to HTML. That's the workflow I expect for all future blog posts, markdown to HTML.</p>
 <p>To accomplish this conversion, I googled &quot;HTML to markdown&quot; and found <a href="https://domchristie.github.io/turndown/">Turndown</a>, which after a single copy-paste worked swimmingly. When I run <code>npx @11ty/eleventy --watch</code>, change my original <code>.html</code> file to a <code>.md</code> file filled with blog post markdown, and save it — BOOM, Eleventy saw my markdown file, compiled it into HTML, and tossed it into in the <code>_site</code> directory as <code>index.html</code>. So cool!</p>
-<pre><code class="language-html">_site/
-  blog/
-    hello-world-and-why-im-blogging
-      index.html
-blog/
-    hello-world-and-why-im-blogging.md ⬅️
+<pre><code class="language-html">_site/ blog/ hello-world-and-why-im-blogging index.html blog/
+hello-world-and-why-im-blogging.md ⬅️
 </code></pre>
 <p>My website is still serving an HTML file, but it's now being compiled from markdown instead of from HTML. One thing that's different for users is that the old blog post was available at <code>...why-im-blogging.html</code> and this one is available at <code>...why-im-blogging</code>. That's actually a much better (and common) URL pattern, one that doesn't require <code>.html</code> at the end, so win-win.</p>
 <p>Inside the blog post, what used to be HTML</p>
 <pre><code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
-  &lt;head&gt;...&lt;/head&gt;
+  &lt;head&gt;
+    ...
+  &lt;/head&gt;
   &lt;body&gt;
     &lt;h1&gt;Hello, world. And why I'm blogging.&lt;/h1&gt;
     &lt;h2&gt;tl: dr;&lt;/h2&gt;
     &lt;p&gt;This is my first of hopefully more-than-one blog posts...&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
 </code></pre>
 <p>has now become markdown.</p>
 <pre><code class="language-markdown"># Hello, world. And why I'm blogging.
@@ -510,13 +471,14 @@ Problem writing Eleventy templates: (more in DEBUG output)
 </code></pre>
 <p>that contains a very simple HTML wrapper (taken from the 11ty docs)</p>
 <pre><code class="language-html">---
-title: Andrew Borstein | Full-Stack Front-End Developer
+title: Arman Chand| Full-Stack Front-End Developer
 ---
-&lt;!doctype html&gt;
+
+&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
   &lt;head&gt;
-    &lt;meta charset=&quot;utf-8&quot;&gt;
-    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;meta charset=&quot;utf-8&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
     &lt;title&gt;{{ title }}&lt;/title&gt;
   &lt;/head&gt;
   &lt;body&gt;
@@ -536,7 +498,7 @@ Wrote 5 files in 0.03 seconds (v0.10.0)
 Watching…
 </code></pre>
 <p>You may have noticed that my <code>title</code> in the <code>blog.njk</code> file is different than the one in my actual blog post. That's because front matter cascades, kind of like CSS. The value I set in the layout file will be the default, and if I set one in the blog post it will override the default.</p>
-<p>Using one <code>title</code> attribute also provides the convenient advantage of letting me set the front matter once and use it in multiple places. Every file in this cascade of templates that uses the <code>title</code> data will return whatever the final value is. In practice that means both the layout <code>&lt;title&gt;</code> and the blog post <code>&lt;h1&gt;</code> will be set to &quot;Hello world, and why I'm blogging&quot;, even though the default value is &quot;Andrew Borstein | Full-Stack Front-End Developer&quot;. It's also a good practice in general to sync your document title and the h1 on a given page.</p>
+<p>Using one <code>title</code> attribute also provides the convenient advantage of letting me set the front matter once and use it in multiple places. Every file in this cascade of templates that uses the <code>title</code> data will return whatever the final value is. In practice that means both the layout <code>&lt;title&gt;</code> and the blog post <code>&lt;h1&gt;</code> will be set to &quot;Hello world, and why I'm blogging&quot;, even though the default value is &quot;Arman Chand| Full-Stack Front-End Developer&quot;. It's also a good practice in general to sync your document title and the h1 on a given page.</p>
 <p>My blog post now has a basic (but totally legit) wrapper! I'm using templates again, wow, what a relief. I haven't yet ported over my actual website template, or fancy features like linkable headings, or other accessibility enhancements. I'll come back to that.</p>
 <h3>Step 5: Finish the layouts</h3>
 <p>For now, I know that my blog post template will be slightly different than my website page template, and that both will probably extend one base template. Given that, I'll actually change <code>blog.njk</code> to <code>base.njk</code>.</p>
@@ -553,13 +515,10 @@ Watching…
 <pre><code class="language-html">---
 layout: layouts/base
 ---
-&lt;a class=&quot;back-to-index&quot; href=&quot;/#blog&quot;&gt;
-  Back to blog index
-&lt;/a&gt;
+
+&lt;a class=&quot;back-to-index&quot; href=&quot;/#blog&quot;&gt; Back to blog index &lt;/a&gt;
 &lt;main&gt;
-  &lt;article&gt;
-    {{ content | safe }}
-  &lt;/article&gt;
+  &lt;article&gt;{{ content | safe }}&lt;/article&gt;
 &lt;/main&gt;
 </code></pre>
 <p>Note that the <code>blog</code> layout itself uses the <code>base</code> layout via <code>layout: layouts/base</code>. The two are chained together, so now when I set <code>layout: layouts/blog</code> in my blog post:</p>
@@ -590,14 +549,15 @@ layout: layouts/base
 <p>Awesome! My site still looks pretty terrible, so let's add back the missing stylesheets to our <code>base</code> layout. While we're there let's add a <code>description</code> for better SEO and share-ability and include JS needed for the <a href="https://materializecss.com/">Materialize framework</a> I'm currently using (but hoping to deprecate very soon).</p>
 <pre><code class="language-html">---
 description: I want to make things that make a difference.
-title: Andrew Borstein | Full-Stack Front-End Developer
+title: Arman Chand| Full-Stack Front-End Developer
 ---
-&lt;!doctype html&gt;
+
+&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
   &lt;head&gt;
     &lt;!-- Metadata --&gt;
-    &lt;meta charset=&quot;utf-8&quot;&gt;
-    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;meta charset=&quot;utf-8&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
     &lt;title&gt;Moving my blog to Eleventy, Part 3: Creating Layouts&lt;/title&gt;
     &lt;meta name=&quot;description&quot; content=&quot;We walk through how to create two layouts using Eleventy: a base layout for every page on the site and a blog layout specifically for blog posts that extends the base layout.&quot; /&gt;
     &lt;!-- CSS --&gt;
@@ -617,6 +577,7 @@ title: Andrew Borstein | Full-Stack Front-End Developer
 <pre><code class="language-html">---
 layout: layouts/base
 ---
+
 &lt;style&gt;
   /* Blog Styles */
   body {
@@ -631,16 +592,12 @@ layout: layouts/base
   }
 &lt;/style&gt;
 
-&lt;a class=&quot;back-to-index&quot; href=&quot;/#blog&quot;&gt;
-  Back to blog index
-&lt;/a&gt;
+&lt;a class=&quot;back-to-index&quot; href=&quot;/#blog&quot;&gt; Back to blog index &lt;/a&gt;
 &lt;main&gt;
-  &lt;article&gt;
-    {{ content | safe }}
-  &lt;/article&gt;
+  &lt;article&gt;{{ content | safe }}&lt;/article&gt;
 &lt;/main&gt;
 </code></pre>
-<p>And so on, and so on. By the time I'm done with all my changes, my single blog post page is back to looking the way it used to  🎉</p>
+<p>And so on, and so on. By the time I'm done with all my changes, my single blog post page is back to looking the way it used to 🎉</p>
 <p><img src="screenshot-blog-post-with-css.jpg" alt="screenshot of this blog post hosted locally, with all the original CSS styles re-enabled"></p>
 <h2>Next Steps</h2>
 <p>I've made huge progress! But I'm only touching the tip of the iceberg. Eleventy is the foundation that will help me</p>
