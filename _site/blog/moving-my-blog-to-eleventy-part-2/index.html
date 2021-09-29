@@ -444,24 +444,16 @@ Watching…
 <p>I open my the <code>console</code> tab in Chrome developer tools and it's telling me that basically none of my assets were loaded.</p>
 <p><img src="screenshot-console-missing-assets.jpg" alt="chrome dev console showing errors related to missing assets"></p>
 <p>This makes sense. The site is being loaded from a new <code>/_site</code> directory that <em>only</em> includes compiled HTML files and their parent folders. No other files or folders were touched, including my <code>/assets</code> folder. So all of my CSS files and images are broken because my <code>index.html</code> assumes the assets live in the same folder as it does — they are loaded via relative URLs:</p>
-<pre><code class="language-html">_site/ 
-  public/ 
-    index.html 
-public/ 
-  assets/ ⬅️
+<pre><code class="language-html">_site/ public/ index.html public/ assets/ ⬅️
 </code></pre>
 <pre><code class="language-html">&lt;!-- index.html  --&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;/assets/css/style.css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;assets/css/style.css&quot; /&gt;
 </code></pre>
 <p>The above will only work if the <code>assets/</code> folder is in the <code>_site/</code> folder alongside <code>index.html</code>. But it's not yet, because it wasn't moved there by Eleventy. It's looking for directories in places where they don't exist yet.</p>
 <p>I'm sure (I hope?) Eleventy has some official method for managing and compiling assets. If not, I can always manually move the assets folder where I need it. I'll circle back later to find out if there's a better way to load my static assets.</p>
 <h3>Fixing the missing assets, attempt #1</h3>
 <p>After I move my <code>assets/</code> folder, this is what my directory looks:</p>
-<pre><code class="language-html">_site/ 
-  public/ 
-    assets/ ⬅️ 
-    index.html 
-public/
+<pre><code class="language-html">_site/ public/ assets/ ⬅️ index.html public/
 </code></pre>
 <p>OK, it turns out that simply moving the <code>/assets</code> folder into <code>/_site</code> didn't fix the issue. A closer look shows that the relative URLs actually use a syntax that makes them relative to the <em>root</em> of the site, not their current directory. We want <code>index.html</code> to the find the folder that's sitting right next to it, no matter where they both move.</p>
 <h3>Fixing the missing assets, attempt #2</h3>

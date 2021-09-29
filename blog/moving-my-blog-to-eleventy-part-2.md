@@ -147,7 +147,7 @@ we'll run
 $ npx @11ty/eleventy
 ```
 
-to ensure my _local_ Eleventy dependency has been successfully installed. 
+to ensure my _local_ Eleventy dependency has been successfully installed.
 
 ```bash
 $ npx @11ty/eleventy
@@ -262,16 +262,12 @@ I open my the `console` tab in Chrome developer tools and it's telling me that b
 This makes sense. The site is being loaded from a new `/_site` directory that _only_ includes compiled HTML files and their parent folders. No other files or folders were touched, including my `/assets` folder. So all of my CSS files and images are broken because my `index.html` assumes the assets live in the same folder as it does — they are loaded via relative URLs:
 
 ```html
-_site/ 
-  public/ 
-    index.html 
-public/ 
-  assets/ ⬅️
+_site/ public/ index.html public/ assets/ ⬅️
 ```
 
 ```html
 <!-- index.html  -->
-<link rel="stylesheet" href="/assets/css/style.css" />
+<link rel="stylesheet" href="assets/css/style.css" />
 ```
 
 The above will only work if the `assets/` folder is in the `_site/` folder alongside `index.html`. But it's not yet, because it wasn't moved there by Eleventy. It's looking for directories in places where they don't exist yet.
@@ -283,11 +279,7 @@ I'm sure (I hope?) Eleventy has some official method for managing and compiling 
 After I move my `assets/` folder, this is what my directory looks:
 
 ```html
-_site/ 
-  public/ 
-    assets/ ⬅️ 
-    index.html 
-public/
+_site/ public/ assets/ ⬅️ index.html public/
 ```
 
 OK, it turns out that simply moving the `/assets` folder into `/_site` didn't fix the issue. A closer look shows that the relative URLs actually use a syntax that makes them relative to the _root_ of the site, not their current directory. We want `index.html` to the find the folder that's sitting right next to it, no matter where they both move.
